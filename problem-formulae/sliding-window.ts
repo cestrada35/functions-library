@@ -50,53 +50,32 @@ boolean {
     return false;
 };
 
-// a window???
-
-// works for contiguous/harmonious sub arrays
 function findLHS(nums: number[]): number {
-    // return the length of longest harmonious sub Array
-    // datastructure: map (keep count of each element, el,count <key,val>)
-    // plan: 
-    // initialize window, then iterate through elements, 
-        // keep track of count of varied elements, 
-        // once new element is encountered, 
-            // increase window until harmonious condition is met
-            // remove leftmost element and count, repeat 
-
-    // what if arr is size 1 or first two els are not harmonious or first two elements are the same
-    const window = new Map<number, number>();
-    window.set(nums[0], 1)
-    window.set(nums[1], 1)
-    let lHS = 2; 
-    let hS = 2;
-
-
-    function isHarmonious(value: number) {
-        if (Math.abs(nums[1] - value) >= 1) {
-            return true;
-        }
-        return false;
+    // Create a frequency map to count occurrences of each number
+    const frequencyMap: Record<number, number> = {};
+  
+    // Count the frequency of each number in the array
+    for (const num of nums) {
+        frequencyMap[num] = (frequencyMap[num] || 0) + 1;
     }
-
-    for (let i = 2; i < nums.length; i++) {
-        if ( window.has(nums[i]) && (isHarmonious(nums[i])) ){
-            let count = window.get(nums[i]) ?? 0;
-            window.set(nums[i], count+1);
-            hS++;
-            lHS = Math.max(lHS, hS)
-        } else if ( isHarmonious(nums[i]) ) {
-            // a new element, add to map, remove first key
-            window.set(nums[i], 1);
-            window.delete(nums[0]);
-            hS-=window.get(nums[0]) ?? 0;
-        } else {
-            // not harmonious, new element,
-            window.set(nums[i], 1);
-            window.delete(nums[0]);
-            hS = 1;
+  
+    // Track the maximum length of harmonious subsequence
+    let maxLength = 0;
+  
+    // Iterate through each unique number and its frequency
+    for (const [numStr, frequency] of Object.entries(frequencyMap)) {
+        // Convert string key back to number and calculate the next consecutive number
+        const currentNum = Number(numStr);
+        const nextNum = currentNum + 1;
+      
+        // Check if the next consecutive number exists in the frequency map
+        if (frequencyMap[nextNum]) {
+            // Update max length with sum of current and next number frequencies
+            maxLength = Math.max(maxLength, frequency + frequencyMap[nextNum]);
         }
     }
-    return lHS!;
+    console.log(maxLength)
+    return maxLength;
 }
 
-findLHS([1,3,2,2,5,2,3,7])
+findLHS([1,3,2,2,5,2,3,7]);
