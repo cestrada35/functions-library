@@ -78,4 +78,32 @@ function findLHS(nums: number[]): number {
     return maxLength;
 }
 
-findLHS([1,3,2,2,5,2,3,7]);
+// Find repeated substrings with length k = 10 (fixed window)
+// return them in an array
+// data structure: map <sequence, count>
+// plan: traverse once, store all sets of 10, if a repeat, update the count
+//  Return all sequences with counts greater than 1;
+
+function findRepeatedDnaSequences(s: string): string[] {
+    const sequenceFreq = new Map<string, number>();
+    let repeatedSequences: string[] = [];
+    const k = 10;
+
+    for (let i = k-1; i<=s.length; i++) {
+        let sequence = s.substring(i-k, i);
+        if (sequenceFreq.has(sequence)) {
+            let count = sequenceFreq.get(sequence) ?? 0;
+            sequenceFreq.set(sequence, (count + 1));
+        } else {
+            sequenceFreq.set(sequence, 1);
+        }
+    }
+    repeatedSequences = Array.from(sequenceFreq.entries())
+        .filter(([seq,freq]) => freq > 1)
+        .map(([seq]) => seq)
+    console.log(repeatedSequences, repeatedSequences.length)
+    return repeatedSequences;
+};
+
+// findRepeatedDnaSequences("AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT");
+findRepeatedDnaSequences("TTTGTTTTTTTTTTTTTTTGTTTTTCTGCGCGGTTTTTTTCTGCGCGGTTTTTTTTTTTTTTTATTTTTTGTTT");
