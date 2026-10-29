@@ -83,7 +83,6 @@ function findLHS(nums: number[]): number {
 // data structure: map <sequence, count>
 // plan: traverse once, store all sets of 10, if a repeat, update the count
 //  Return all sequences with counts greater than 1;
-
 function findRepeatedDnaSequences(s: string): string[] {
     const k = 10;
     const seen = new Set<string>();
@@ -96,5 +95,47 @@ function findRepeatedDnaSequences(s: string): string[] {
     return [...result];
 }
 
-// findRepeatedDnaSequences("AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT");
-// findRepeatedDnaSequences("TTTGTTTTTTTTTTTTTTTGTTTTTCTGCGCGGTTTTTTTCTGCGCGGTTTTTTTTTTTTTTTATTTTTTGTTT");
+
+// pull max until element is reached
+// Find the minimum length of a contiguous sub array who will add up to (or be greater than) a target value, otherwise return 0
+// data struct: pointers
+// plan, move left pointer when constraint is satisfied, move right when not, keep track of min
+function minSubArrayLen(target: number, nums: number[]): number {
+    let left = 0; 
+    let right = 0;
+    let sum = 0;
+    let minimum = Infinity;
+    for (right; right < nums.length; right++) {
+        sum += nums[right];
+        while (sum >= target) {
+            let localmin = right - left + 1;
+            minimum = Math.min(minimum, localmin);
+            sum -= nums[left];
+            left++;
+        }
+    }
+    (minimum != Infinity) ? minimum: 0;
+};
+
+// find longest substring, contiguous without dupes
+// data struct: pointers/ sliding window (set - no dupes)
+// plan:
+    // iterate through array by increasing position of right of window
+        // add new element to set, compare max
+    // if element is a dupe, increment left window, remove element from set
+function lengthOfLongestSubstring(s: string): number {
+    const window = new Set<string>();
+    let maxLen = 0;
+    let left = 0;
+
+    for (let right = 0; right < s.length; right++) {
+        while (window.has(s[right])) {
+            window.delete(s[left]);
+            left++;
+        }
+        window.add(s[right]);
+        maxLen = Math.max(maxLen, right - left + 1);
+    }
+
+    return maxLen;
+}
