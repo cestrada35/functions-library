@@ -85,25 +85,16 @@ function findLHS(nums: number[]): number {
 //  Return all sequences with counts greater than 1;
 
 function findRepeatedDnaSequences(s: string): string[] {
-    const sequenceFreq = new Map<string, number>();
-    let repeatedSequences: string[] = [];
     const k = 10;
-
-    for (let i = k-1; i<=s.length; i++) {
-        let sequence = s.substring(i-k, i);
-        if (sequenceFreq.has(sequence)) {
-            let count = sequenceFreq.get(sequence) ?? 0;
-            sequenceFreq.set(sequence, (count + 1));
-        } else {
-            sequenceFreq.set(sequence, 1);
-        }
+    const seen = new Set<string>();
+    const result = new Set<string>();
+    for (let i = 0; i <= s.length - k; i++) {
+        const seq = s.slice(i, i + k);
+        if (seen.has(seq)) result.add(seq);
+        else seen.add(seq);
     }
-    repeatedSequences = Array.from(sequenceFreq.entries())
-        .filter(([seq,freq]) => freq > 1)
-        .map(([seq]) => seq)
-    console.log(repeatedSequences, repeatedSequences.length)
-    return repeatedSequences;
-};
+    return [...result];
+}
 
 // findRepeatedDnaSequences("AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT");
-findRepeatedDnaSequences("TTTGTTTTTTTTTTTTTTTGTTTTTCTGCGCGGTTTTTTTCTGCGCGGTTTTTTTTTTTTTTTATTTTTTGTTT");
+// findRepeatedDnaSequences("TTTGTTTTTTTTTTTTTTTGTTTTTCTGCGCGGTTTTTTTCTGCGCGGTTTTTTTTTTTTTTTATTTTTTGTTT");
