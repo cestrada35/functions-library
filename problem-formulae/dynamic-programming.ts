@@ -29,8 +29,37 @@ function climbStairs(n: number): number {
 
 
 
+// Problem: Return Pascals triangle for numRows
+// Structure: Dynamic
+// Plan: build table, bottom up approach to save time
+    // 1 = [1]
+    // 2 = [1,1] (build the rest: pascTri[numRows] = pascTri[numRows] + pascTri[numRows-1])
+// Edge Cases:
+function generate(numRows: number): number[][] {
+    let pTriangle: number[][] = [];
+
+    pTriangle[0] = [1];
+    if (numRows > 1) {
+        pTriangle[1] = [1,1];
+    }
+
+    for (let i = 2; i < numRows; i++){
+        let newRow: number[] = [1];
+        for (let j = 1; j < pTriangle[i-1].length; j++){
+            // iterate through elements in previous row
+            newRow.push(pTriangle[i-1][j] + pTriangle[i-1][j-1]);
+        }
+        newRow.push(1);
+        pTriangle[i] = newRow;
+    }
+    return pTriangle;
+};
 
 
+// Problem:
+// Structure:
+// Plan:
+// Edge Cases:
 
 
 
