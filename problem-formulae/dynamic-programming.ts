@@ -77,6 +77,41 @@ function getRow(rowIndex: number): number[] {
 
 
 
+
+
+// Problem: 
+    // Given an array of prices per ith day, return the maximum profit by 
+    // returning the difference between the lowest and highest price in the array. 
+    // You can only buy and sell once (sequentially).
+// Structure: Dynamic Programming
+// Plan:
+     // brute: compute the differences every pair of element
+    // instinct:  
+        // Just compare the profits of each day with the minimum price seen so far.
+        // if the price is lower than our global min price (so far), set min price to that new one
+        // otherwise calculate profit, if greater than global profit, update max profit
+// Edge Cases:
+    // Array length can be 1 
+
+function maxProfit(prices: number[]): number {
+    let minPrice = Infinity;
+    let maxProfit = 0;
+
+    for (const price of prices) {
+        if (price < minPrice) {
+            minPrice = price;            // new cheapest buy seen so far
+        } else if (price - minPrice > maxProfit) {
+            maxProfit = price - minPrice; // best sell at current day
+        }
+    }
+
+    return maxProfit;
+}
+
+
+
+
+
 // Problem:
 // Structure:
 // Plan:
